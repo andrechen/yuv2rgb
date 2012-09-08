@@ -1,6 +1,8 @@
-This is my first test repo on GitHub.
-A simple, neat functions to transform from yuv(nv21, nv12 is also possible) to rgb, bgr…
-using C++ template and arm neon instructions. some test results(1280x720 yuv): 
+This is my first test repo on GitHub:-)
+It contains simple, neat (C++ template) functions to transform from yuv(nv21, nv12 is also possible) to rgb(bgr, other formats are easy to extend)
+
+following are comparing results(1280x720 nv21) with or without arm neon instructions:
+
 iPhone3GS : 55.45 vs 13.34(neon) milliseconds
 iPhone4S : 30.76 vs 10.43(neon) milliseconds
 hTC ruby : 32.25 vs 15.33(neon) milliseconds
