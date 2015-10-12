@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2012 Andre Chen and contributors
+ *
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+ 
 //
 //  yuv2rgb.h
 //
@@ -17,12 +35,12 @@ Cumbersome YUV formats : http://www.fourcc.org/yuv.php
 NV12
 YUV 4:2:0 image with a plane of 8 bit Y samples followed by an interleaved U/V plane containing 8 bit 2x2 subsampled colour difference samples.
 Microsoft defines this format as follows:
-	"A format in which all Y samples are found first in memory as an array of unsigned char with an even number of lines 
-	(possibly with a larger stride for memory alignment), followed immediately by an array of unsigned char containing interleaved Cb and Cr 
-	samples (such that if addressed as a little-endian WORD type, Cb(U) would be in the LSBs and Cr(V) would be in the MSBs) with the same total 
+	"A format in which all Y samples are found first in memory as an array of unsigned char with an even number of lines
+	(possibly with a larger stride for memory alignment), followed immediately by an array of unsigned char containing interleaved Cb and Cr
+	samples (such that if addressed as a little-endian WORD type, Cb(U) would be in the LSBs and Cr(V) would be in the MSBs) with the same total
 	stride as the Y samples. This is the preferred 4:2:0 pixel format"
 e.g. YYYYYYYY YYYYYYYY YYYYYYYY YYYYYYYY UVUVUVUV UVUVUVUV
- 
+
 NV21(aka YCrCb format. the default format for camera preview images)
 YUV 4:2:0 image with a plane of 8 bit Y samples followed by an interleaved V/U plane containing 8 bit 2x2 subsampled chroma samples.
 The same as NV12 except the interleave order of U and V is reversed.
@@ -35,12 +53,12 @@ To convert Y'UV to RGB :
  |G| = | 298  -100   -208 | | U - 128 |
  |B|   | 298   516     0  | | V - 128 |
  then shift 8 bits, i.e.
- 
+
  in integer math:
  R = clamp((298*(Y'-16)+409*(V-128)+128)>>8)
  G = clamp((298*(Y'-16)-100*(U-128)-208*(V-128)+128)>>8)
  B = clamp((298*(Y'-16)+516*(U-128)+128)>>8)
- 
+
  to encode RGB to Y'UV..
  Y' = (( 66 * R + 129 * G +  25 * B + 128) >> 8) +  16
  U  = ((-38 * R -  74 * G + 112 * B + 128) >> 8) + 128
@@ -62,7 +80,7 @@ bool nv21_to_rgba(unsigned char* rgba, unsigned char alpha, unsigned char const*
 
 //
 // neon implements...
-// [in] 
+// [in]
 //		alpha : alpha value if rgba
 //		yuv : nv21 image(size=width*height*3/2)
 //      width : !!!must be multiple of 8!!! (NOTE:android graphics buffer ensure this)

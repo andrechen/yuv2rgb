@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2012 Andre Chen and contributors
+ *
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 //
 //  yuv2rgb.cpp
 //
@@ -72,10 +90,10 @@ bool decode_yuv_neon(unsigned char* out, unsigned char const* yuv, int width, in
 	// iteration counts
     int const itHeight = height>>1;
     int const itWidth = width>>3;
-    
+
     // stride of each line
     int const stride = width*trait::bytes_per_pixel;
-    
+
     // total bytes of each write
     int const dst_pblock_stride = 8*trait::bytes_per_pixel;
 
@@ -86,7 +104,7 @@ bool decode_yuv_neon(unsigned char* out, unsigned char const* yuv, int width, in
     uint8x8_t const Yshift = vdup_n_u8(16);
     int16x8_t const half = vdupq_n_u16(128);
     int32x4_t const rounding = vdupq_n_s32(128);
-    
+
     // tmp variable to load y and uv
 	uint16x8_t t;
 
@@ -138,7 +156,7 @@ bool decode_yuv_neon(unsigned char* out, unsigned char const* yuv, int width, in
 class NV21toRGB {
 public:
 	enum { bytes_per_pixel = 3 };
-	
+
 	static void loadvu(int& U, int& V, unsigned char const* &uv) {
 		V = (*uv++) - 128;
         U = (*uv++) - 128;
@@ -157,7 +175,7 @@ bool nv21_to_rgb(unsigned char* rgb, unsigned char const* nv21, int width, int h
 class NV21toRGBA {
 public:
 	enum { bytes_per_pixel = 4 };
-	
+
 	static void loadvu(int& U, int& V, unsigned char const* &uv) {
 		V = (*uv++) - 128;
         U = (*uv++) - 128;
